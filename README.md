@@ -19,3 +19,14 @@ Requires [RequireJS](http://requirejs.org). Basic define and export of decorator
 			scrollerate( els[i] );
 		}
 	});
+
+#A Bit About Scrollbars#
+How scrolltop-overflow works is by updating the scrollTop property of a div that has a static height and overflow:scroll defined. As such, scrollbars are not present on a mobile device (at least for those not fortunate to suport -webkit-overflow-scrolling). They are not present on resize of the element container, nor on 'scrolling' with scrolltop-overflow.
+
+In order to show scrollbars upon 'scroll' gesture, scrolltop-overflow employs the ::-webkit-scrollbar pseudo-style. This is a fantastic article that goes into more depth: [http://css-tricks.com/custom-scrollbars-in-webkit/](http://css-tricks.com/custom-scrollbars-in-webkit/).
+
+scrolltop-overflow applies the bar style at runtime. The _scrollbarstyle_ property found in the library defines the thumb style. This is inserted into a stylesheet upon start of scroll and deleted from a stylesheet upon end of scroll using the insertRule() and deleteRule() methods, respectively. As such, scrolltop-overflow - if you are looking for scrollbar display support - requires the inclusion of _style/stof-scrollbar.css_ file. scrolltop-overflow scans for this stylesheets existance on the DOM and calls insertRule() and deleteRule() on its instance to show and hide the scrollbar.
+
+The one caveat in this solution is that this style is applied to the document as whole; meaning, this style is applied to EVERY element you have decorated with scrolltop-overflow. In other words, when a scroll is triggered by one scrolltop-overflow element, if there is another scrolltop-overflow element visible in the viewport, the scrollbar will be seen in that element as well (though use is not actively interacting with it). A minor caveat, in my opinion, as i imagine the standard usecase being a single scrolltop-overflow visible at any given time in the viewport.
+
+just a heads up :)
