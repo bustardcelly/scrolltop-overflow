@@ -1,4 +1,4 @@
-/*! scrolltop-overflow.amd 0.1.1 exports the decorator method that allows for touch-enabled scrolling of overflow:scroll element on mobile. (c) Todd Anderson : http://www.custardbelly.com/blog */
+/*! scrolltop-overflow.amd 0.2.0 exports the decorator method that allows for touch-enabled scrolling of overflow:scroll element on mobile. (c) Todd Anderson : http://www.custardbelly.com/blog */
 define( function() {
 
 	var isTouch = 'ontouchstart' in window,
