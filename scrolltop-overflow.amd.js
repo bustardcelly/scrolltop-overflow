@@ -2,6 +2,20 @@
 define( function() {
 
 	var isTouch = 'ontouchstart' in window,
+		scrollbarstyle = '::-webkit-scrollbar-thumb {border-radius: 2px; background-color: rgba(171, 171, 171, 1);}',
+		sheet = (function() {
+			var sheets = document.styleSheets,
+				i = 0, 
+				length = sheets.length,
+				scrollbarSheet;
+				for( i; i < length; i++ ) {
+					scrollbarSheet = sheets[i];
+					if( scrollbarSheet.href.indexOf('stof-scrollbar.css') != -1 ) {
+						return scrollbarSheet;
+					}
+				}
+			return null;
+		}()),
 		DAMP = 0.8,
 		THRESHOLD = 0.01,
 		VECTOR_MIN = 0.065,
@@ -32,20 +46,6 @@ define( function() {
 		 * If found, using show() and hide() it will reveal the scrollbar using psuedo-scrollbar styles for webkit.
 		 */
 		scrollbar = function() {
-			var scrollbarstyle = '::-webkit-scrollbar-thumb {border-radius: 2px; background-color: rgba(171, 171, 171, 1);}',
-				sheet = (function() {
-					var sheets = document.styleSheets,
-						i = 0, 
-						length = sheets.length,
-						scrollbarSheet;
-						for( i; i < length; i++ ) {
-							scrollbarSheet = sheets[i];
-							if( scrollbarSheet.href.indexOf('scrollbar.css') != -1 ) {
-								return scrollbarSheet;
-							}
-						}
-					return null;
-				}());
 			return {
 				show: function() {
 					if( sheet !== null ) {
