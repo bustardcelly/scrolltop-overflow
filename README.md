@@ -29,4 +29,6 @@ scrolltop-overflow applies the bar style at runtime. The _scrollbarstyle_ proper
 
 The one caveat in this solution is that this style is applied to the document as whole; meaning, this style is applied to EVERY element you have decorated with scrolltop-overflow. In other words, when a scroll is triggered by one scrolltop-overflow element, if there is another scrolltop-overflow element visible in the viewport, the scrollbar will be seen in that element as well (though use is not actively interacting with it). A minor caveat, in my opinion, as i imagine the standard usecase being a single scrolltop-overflow visible at any given time in the viewport.
 
+This behaviour/display is optional, of course. If you choose to not include the _stof-scrollbar.css_ file in your page, then the User will not see any scrollbar displayed when scrolling.
+
 just a heads up :)
