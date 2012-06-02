@@ -3,7 +3,9 @@
     width: 5px;
 }
 
+/* < will be applied in scrolltop-oveflow.js upon scroll; removed on end of scroll. >
 ::-webkit-scrollbar-thumb {
     border-radius: 2px;
     background-color: rgba(171, 171, 171, 1);
 }
+*/

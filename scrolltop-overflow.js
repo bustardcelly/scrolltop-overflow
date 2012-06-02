@@ -31,6 +31,38 @@
 			this.time = time;
 		},
 		/**
+		 * Scrollbar scans for the scrollbar.css file from this project being on the DOM.
+		 * If found, using show() and hide() it will reveal the scrollbar using psuedo-scrollbar styles for webkit.
+		 */
+		scrollbar = function() {
+			var scrollbarstyle = '::-webkit-scrollbar-thumb {border-radius: 2px; background-color: rgba(171, 171, 171, 1);}',
+				sheet = (function() {
+					var sheets = document.styleSheets,
+						i = 0, 
+						length = sheets.length,
+						scrollbarSheet;
+						for( i; i < length; i++ ) {
+							scrollbarSheet = sheets[i];
+							if( scrollbarSheet.href.indexOf('scrollbar.css') != -1 ) {
+								return scrollbarSheet;
+							}
+						}
+					return null;
+				}());
+			return {
+				show: function() {
+					if( sheet !== null ) {
+						sheet.insertRule( scrollbarstyle, 1);
+					}
+				},
+				hide: function() {
+					if( sheet !== null ) {
+						sheet.deleteRule( 1 );
+					}
+				}
+			};
+		},
+		/**
 		 * Animator attempts to use requestAnimationFrame, and falls back to setTimeout for
 		 * invoking a method continually after start() until stop() request.
 		 */ 
@@ -81,6 +113,7 @@
 				marks = [],
 				touches,
 				anim = animator(),
+				bar = scrollbar(),
 				/**
 				 * Object pool to allow for only a finite amount of mark objects being created.
 				 * @param  {mark} MarkObject The constructor to use in generating new mark objects.
@@ -190,13 +223,14 @@
 				 * Request to start animation loop.
 				 */
 				startAnimation = function() {
+					bar.show();
 					anim.start(animate);
 				},
 				/**
 				 * Request to stop animation loop.
 				 */
 				endAnimation = function() {
-					// element.removeChild( scrollbar );
+					bar.hide();
 					var i = 0, length = marks.length;
 					anim.stop();
 					while( --i > -1 ) {
