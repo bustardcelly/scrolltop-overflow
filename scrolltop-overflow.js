@@ -1,6 +1,7 @@
 (function(window) {
 
-	var elements = window.document.querySelectorAll( 'div.scrolltop-overflow' ),
+	var isTouch = 'ontouchstart' in window,
+		elements = window.document.querySelectorAll( 'div.scrolltop-overflow' ),
 		i = 0,
 		length = elements.length,
 		DAMP = 0.8,
@@ -23,6 +24,39 @@
 
 			return targetValue;
 		},
+		animator = function() {
+			var animateID,
+				requestAnimationFrame = window.requestAnimationFrame || 
+                                window.mozRequestAnimationFrame ||  
+                                window.webkitRequestAnimationFrame || 
+                                window.msRequestAnimationFrame ||
+                                window.oRequestAnimationFrame,
+                cancelAnimationFrame =  window.cancelAnimationFrame || 
+                                window.mozCancelAnimationFrame ||  
+                                window.webkitCancelAnimationFrame || 
+                                window.msCancelAnimationFrame ||
+                                window.oCancelAnimationFrame;
+			return {
+				start: function( method ) {
+					if( requestAnimationFrame ) {
+						animateID = requestAnimationFrame( method );
+					}
+					else {
+						animateID = setTimeout( method, 1000 / 60 );
+					}
+				},
+				stop: function() {
+					if( requestAnimationFrame ) {
+						if( cancelAnimationFrame && animateID ) {
+							cancelAnimationFrame( animateID );
+						}
+					}
+					else {
+						clearTimeout( animateID );
+					}
+				}
+			};
+		},
 		decorate = function( element ) {
 			var position = 0,
 				scrollY = 0,
@@ -30,9 +64,9 @@
 				difference = 0,
 				direction = 0,
 				velocity = 0,
-				animateKey,
 				marks = [],
 				touches,
+				anim = new animator(),
 				markBank = (function(MarkObject) {
 					var mark, marks = [];
 					return {
@@ -54,7 +88,7 @@
 				})(mark),
 				handleTouchMove = function( event ) {
 					event.preventDefault();
-					touches = event.touches;
+					touches = isTouch ? event.touches : [event];
 					scrollY = touches[0].clientY;
 					difference = prevScrollY - scrollY;
 					direction = ( difference > 0 ) ? 1 : -1;
@@ -127,26 +161,29 @@
 					if( velocity === 0 ) {
 						endAnimation();
 					}
+					else {
+						anim.start(animate);
+					}
 				},
 				startAnimation = function() {
-					animateKey = setInterval( animate, 60 );
+					anim.start(animate);
 				},
 				endAnimation = function() {
 					var i = 0, length = marks.length;
-					clearInterval( animateKey );
+					anim.stop();
 					while( --i > -1 ) {
 						markBank.returnMark(marks.shift());
 					}
 				};
 
-			element.addEventListener( 'touchstart', function( event ) {
+			element.addEventListener( isTouch ? 'touchstart' : 'mousedown', function( event ) {
 				event.stopPropagation();
 				position = this.scrollTop;
-				prevScrollY = event.touches[0].clientY;
+				prevScrollY = isTouch ? event.touches[0].clientY : event.clientY;
 				marks[marks.length] = markBank.getMark(prevScrollY, event.timeStamp);
-				element.addEventListener( 'touchmove', handleTouchMove );
+				element.addEventListener( isTouch ? 'touchmove' : 'mousemove', handleTouchMove );
 			});
-			element.addEventListener( 'touchend', function( event ) {
+			element.addEventListener( isTouch ? 'touchend' : 'mouseup', function( event ) {
 				element.removeEventListener( 'touchmove', handleTouchMove );
 				handleTouchEnd(event);
 			});
