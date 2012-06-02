@@ -196,13 +196,14 @@
 				 * Request to stop animation loop.
 				 */
 				endAnimation = function() {
+					// element.removeChild( scrollbar );
 					var i = 0, length = marks.length;
 					anim.stop();
 					while( --i > -1 ) {
 						markBank.returnMark(marks.shift());
 					}
 				};
-
+				
 			element.addEventListener( isTouch ? 'touchstart' : 'mousedown', function( event ) {
 				event.stopPropagation();
 				position = this.scrollTop;
