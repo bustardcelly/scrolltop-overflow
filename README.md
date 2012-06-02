@@ -5,6 +5,7 @@ utilities to provide overflow scrolling on mobile without -webkit-overflow-scrol
 
 ##scrolltop-overflow.js##
 Straight up HTML. Once loaded, auto-Decorates elements with class '.scrolltop-overflow' to allow for overflow scrolling in div on mobile.
+- See index.html for usage.
 
 ##scrolltop-overflow.amd.js##
 Requires [RequireJS](http://requirejs.org). Basic define and export of decorator() function to invoke on an element.

@@ -1,3 +1,4 @@
+/*! scrolltop-overflow.amd 0.1.1 exports the decorator method that allows for touch-enabled scrolling of overflow:scroll element on mobile. (c) Todd Anderson : http://www.custardbelly.com/blog */
 define( function() {
 
 	var isTouch = 'ontouchstart' in window,
@@ -7,10 +8,6 @@ define( function() {
 		VECTOR_MAX = 60,
 		VECTOR_MULTIPLIER = 0.25,
 		RETURN_TIME = 85,
-		mark = function( y, time ) {
-			this.y = y;
-			this.time = time;
-		},
 		linearMap = function( value, valueMin, valueMax, targetMin, targetMax ) {
 			var zeroValue = value - valueMin,
 				maxRange = valueMax - valueMin,
@@ -21,6 +18,19 @@ define( function() {
 
 			return targetValue;
 		},
+		/**
+		 * Mark objects represent touch points in time during a user scroll.
+		 * @param  {Number} y    Y position to store.
+		 * @param  {Number} time Current timestamp.
+		 */
+		mark = function( y, time ) {
+			this.y = y;
+			this.time = time;
+		},
+		/**
+		 * Animator attempts to use requestAnimationFrame, and falls back to setTimeout for
+		 * invoking a method continually after start() until stop() request.
+		 */
 		animator = function() {
 			var animateID,
 				requestAnimationFrame = window.requestAnimationFrame || 
@@ -54,6 +64,10 @@ define( function() {
 				}
 			};
 		},
+		/**
+		 * Decorate assigns event handlers for touch/mouse events to the element and requests animation and mdofication to its scrollTop property based on user gesture.
+		 * @param  {HTMLElement} element The element to be decorate and allow for touch-based scrolling on overflow:scroll.
+		 */
 		decorate = function( element ) {
 			var position = 0,
 				scrollY = 0,
@@ -63,7 +77,11 @@ define( function() {
 				velocity = 0,
 				marks = [],
 				touches,
-				anim = new animator(),
+				anim = animator(),
+				/**
+				 * Object pool to allow for only a finite amount of mark objects being created.
+				 * @param  {mark} MarkObject The constructor to use in generating new mark objects.
+				 */
 				markBank = (function(MarkObject) {
 					var mark, marks = [];
 					return {
@@ -143,6 +161,9 @@ define( function() {
 						startAnimation();
 					}
 				},
+				/**
+				 * Updates the scrollTop property of the element based on position and velocity.
+				 */
 				animate = function() {
 					var absVelocity;
 
@@ -162,9 +183,15 @@ define( function() {
 						anim.start(animate);
 					}
 				},
+				/**
+				 * Request to start animation loop.
+				 */
 				startAnimation = function() {
 					anim.start(animate);
 				},
+				/**
+				 * Request to stop animation loop.
+				 */
 				endAnimation = function() {
 					var i = 0, length = marks.length;
 					anim.stop();
@@ -186,5 +213,17 @@ define( function() {
 			});
 		};
 
+	/**
+	 * Return the decorator method. This can be used like the following:
+	 * 
+	 * require( ['script/scrolltop-overflow.amd'], function( scrollerate ) {
+	 *   var els = document.querySelectorAll('div.scrolltop-overflow'), 
+	 *		 i = 0,  
+	 * 		 len = els.length; 
+	 * 	 for( i; i < len; i++ ) {
+	 * 		 scrollerate( els[i] ); 	 
+	 * 	 } 	  
+	 * });
+	 */
 	return decorate;
 });
