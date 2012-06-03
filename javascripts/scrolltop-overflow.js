@@ -3,6 +3,13 @@
 
 	var isTouch = 'ontouchstart' in window,
 		elements = window.document.querySelectorAll( 'div.scrolltop-overflow' ),
+		printer = window.document.querySelector( 'div.printer' ),
+		print = function( txt ) {
+			var line = document.createElement('p');
+			var text = document.createTextNode(txt);
+			line.appendChild(text);
+			printer.appendChild(line);
+		},
 		scrollbarstyle = '::-webkit-scrollbar-thumb {border-radius: 2px; background-color: rgba(171, 171, 171, 1);}',
 		sheet = (function() {
 			var sheets = document.styleSheets,
@@ -204,6 +211,7 @@
 					var absVelocity;
 
 					position -= velocity;
+					print( 'pos: ' + position );
 					if( velocity === 0 ) return;
 
 					element.scrollTop = position;
