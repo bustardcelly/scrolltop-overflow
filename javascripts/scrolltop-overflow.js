@@ -101,7 +101,6 @@
 						}
 					}
 					else {
-						printline( 'end' );
 						clearTimeout( animateID );
 					}
 				}
@@ -215,7 +214,7 @@
 					if( velocity === 0 ) return;
 
 					element.scrollTop = position;
-					printline( 'pos: ' + element.scrollTop );
+					
 					velocity *= DAMP;
 					absVelocity = ( velocity > 0 ) ? velocity : -velocity;
 					if( absVelocity < VECTOR_MIN ) {
