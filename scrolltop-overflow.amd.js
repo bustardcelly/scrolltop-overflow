@@ -65,6 +65,7 @@ define( function() {
 		 */
 		animator = function() {
 			var animateID,
+				// rAF detection - http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 				requestAnimationFrame = window.requestAnimationFrame || 
                                 window.mozRequestAnimationFrame ||  
                                 window.webkitRequestAnimationFrame || 
