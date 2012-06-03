@@ -87,7 +87,6 @@
                                 window.oCancelAnimationFrame;
 			return {
 				start: function( method ) {
-					printline( 'has rAF: ' + requestAnimationFrame );
 					if( requestAnimationFrame ) {
 						animateID = requestAnimationFrame( method );
 					}
@@ -102,6 +101,7 @@
 						}
 					}
 					else {
+						printline( 'end' );
 						clearTimeout( animateID );
 					}
 				}
@@ -212,10 +212,10 @@
 					var absVelocity;
 
 					position -= velocity;
-					printline( 'pos: ' + position );
 					if( velocity === 0 ) return;
 
 					element.scrollTop = position;
+					printline( 'pos: ' + element.scrollTop );
 					velocity *= DAMP;
 					absVelocity = ( velocity > 0 ) ? velocity : -velocity;
 					if( absVelocity < VECTOR_MIN ) {
