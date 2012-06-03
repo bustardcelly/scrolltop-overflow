@@ -32,3 +32,6 @@ The one caveat in this solution is that this style is applied to the document as
 This behaviour/display is optional, of course. If you choose to not include the _stof-scrollbar.css_ file in your page, then the User will not see any scrollbar displayed when scrolling.
 
 just a heads up :)
+
+##Not working in latest on Android?##
+[http://code.google.com/p/android/issues/detail?id=19625](http://code.google.com/p/android/issues/detail?id=19625)
