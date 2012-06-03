@@ -4,7 +4,7 @@
 	var isTouch = 'ontouchstart' in window,
 		elements = window.document.querySelectorAll( 'div.scrolltop-overflow' ),
 		printer = window.document.querySelector( 'div.printer' ),
-		print = function( txt ) {
+		printline = function( txt ) {
 			var line = document.createElement('p');
 			var text = document.createTextNode(txt);
 			line.appendChild(text);
@@ -87,6 +87,7 @@
                                 window.oCancelAnimationFrame;
 			return {
 				start: function( method ) {
+					printline( 'has rAF: ' + requestAnimationFrame );
 					if( requestAnimationFrame ) {
 						animateID = requestAnimationFrame( method );
 					}
@@ -211,7 +212,7 @@
 					var absVelocity;
 
 					position -= velocity;
-					print( 'pos: ' + position );
+					printline( 'pos: ' + position );
 					if( velocity === 0 ) return;
 
 					element.scrollTop = position;
