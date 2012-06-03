@@ -1,0 +1,10 @@
+body, div {
+	margin: 0;
+	padding: 0;
+	width: 320px;
+}
+
+.compact {
+	width: 320px;
+	height: 84px;
+}
