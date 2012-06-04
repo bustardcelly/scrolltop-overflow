@@ -11,7 +11,8 @@
 				scrollbarSheet;
 				for( i; i < length; i++ ) {
 					scrollbarSheet = sheets[i];
-					if( scrollbarSheet.href.indexOf('stof-scrollbar.css') != -1 ) {
+					if( scrollbarSheet.href && 
+						scrollbarSheet.href.indexOf('stof-scrollbar.css') != -1 ) {
 						return scrollbarSheet;
 					}
 				}
@@ -81,6 +82,7 @@
                                 window.oCancelAnimationFrame;
 			return {
 				start: function( method ) {
+					stop();
 					if( requestAnimationFrame ) {
 						animateID = requestAnimationFrame( method );
 					}
