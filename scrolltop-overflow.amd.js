@@ -47,14 +47,17 @@ define( function() {
 		 * If found, using show() and hide() it will reveal the scrollbar using psuedo-scrollbar styles for webkit.
 		 */
 		scrollbar = function() {
+			var inserted = false;
 			return {
 				show: function() {
-					if( sheet !== null ) {
+					if( sheet !== null && !inserted ) {
+						inserted = true;
 						sheet.insertRule( scrollbarstyle, 1);
 					}
 				},
 				hide: function() {
-					if( sheet !== null ) {
+					if( sheet !== null && inserted ) {
+						inserted = false;
 						sheet.deleteRule( 1 );
 					}
 				}
