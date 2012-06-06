@@ -35,3 +35,5 @@ just a heads up :)
 
 ##Not working in latest on Android?##
 [http://code.google.com/p/android/issues/detail?id=19625](http://code.google.com/p/android/issues/detail?id=19625)
+
+It is recommended to not use this library at all in conjuncion with overflow:scroll. Instead assign overflow:auto to the container.
