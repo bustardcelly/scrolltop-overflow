@@ -173,6 +173,7 @@
 					velocity = 0;
 					marks[marks.length] = markBank.getMark(prevScrollY, event.timeStamp);
 
+					console.log( 'touches: ' + touches.length );
 					if( typeof touchendID !== 'undefined' ) {
 						clearTimeout( touchendID );
 					}
