@@ -148,10 +148,11 @@
 				touchEndID,
 				presumeTouchEnd = function() {
 					try {
-						var evt = document.createEvent('TouchEvents');
+						var evt = document.createEvent('TouchEvent');
 						evt.initTouchEvent('touchend');
 						evt.timeStamp = new Date();
 						element.dispatchEvent(evt);
+						console.log('event dispatch');
 					}
 					catch( e ) {
 						console.log('presumeTouchEnd: ' + e.message);
