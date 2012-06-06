@@ -272,7 +272,8 @@
 			element.addEventListener( isTouch ? 'touchstart' : 'mousedown', function( event ) {
 				event.stopPropagation();
 				position = this.scrollTop;
-				prevScrollY = isTouch ? event.touches[0].clientY : event.clientY;
+				touches = isTouch ? event.touches : [event];
+				prevScrollY = touches[0].clientY;
 				marks[marks.length] = markBank.getMark(prevScrollY, event.timeStamp);
 				element.addEventListener( isTouch ? 'touchmove' : 'mousemove', handleTouchMove );
 			});
