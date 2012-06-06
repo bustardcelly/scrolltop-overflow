@@ -36,4 +36,4 @@ just a heads up :)
 ##Not working in latest on Android?##
 [http://code.google.com/p/android/issues/detail?id=19625](http://code.google.com/p/android/issues/detail?id=19625)
 
-It is recommended to not use this library at all in conjuncion with overflow:scroll. Instead assign overflow:auto to the container.
+scrolltop-overflow may not work on all Android-flavored browsers. As such, it is recommended to try setting overflow:auto on the container and see if that provides the desired behavior. _no scrollbars will appear with such assignment_
