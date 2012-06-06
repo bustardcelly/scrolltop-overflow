@@ -196,6 +196,7 @@
 					}
 					if( marks.length === 0 ) return;
 
+					console.log('end');
 					currentY = touches[0].clientY;
 					crossover = event.timeStamp - RETURN_TIME;
 					while( i++ < length-1 ) {
@@ -273,6 +274,7 @@
 				event.stopPropagation();
 				position = this.scrollTop;
 				touches = isTouch ? event.touches : [event];
+				console.log('start');
 				prevScrollY = touches[0].clientY;
 				marks[marks.length] = markBank.getMark(prevScrollY, event.timeStamp);
 				element.addEventListener( isTouch ? 'touchmove' : 'mousemove', handleTouchMove );
