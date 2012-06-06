@@ -148,14 +148,18 @@
 				touchEndID,
 				presumeTouchEnd = function() {
 					try {
-						var evt = document.createEvent('TouchEvent');
-						evt.initTouchEvent('touchend');
+						var evt = document.createEvent(isTouch ? 'TouchEvent' : 'MouseEvents');
+						if( isTouch ) {
+							evt.initTouchEvent('touchend');
+						}
+						else {
+							evt.initMouseEvent('mouseup');
+						}
 						evt.timeStamp = new Date();
 						element.dispatchEvent(evt);
-						console.log('event dispatch');
 					}
 					catch( e ) {
-						console.log('presumeTouchEnd: ' + e.message);
+						console.log('Exception on scrolltop-overflow:presumeTouchEnd. [REASON]: ' + e.message + '. Possible not support for TouchEvent/MouseEvent.');
 					}
 				},
 				handleTouchMove = function( event ) {
@@ -173,7 +177,6 @@
 					velocity = 0;
 					marks[marks.length] = markBank.getMark(prevScrollY, event.timeStamp);
 
-					console.log( 'touches: ' + touches.length );
 					if( typeof touchendID !== 'undefined' ) {
 						clearTimeout( touchendID );
 					}
@@ -196,7 +199,6 @@
 					}
 					if( marks.length === 0 ) return;
 
-					console.log('end');
 					currentY = touches[0].clientY;
 					crossover = event.timeStamp - RETURN_TIME;
 					while( i++ < length-1 ) {
@@ -274,7 +276,6 @@
 				event.stopPropagation();
 				position = this.scrollTop;
 				touches = isTouch ? event.touches : [event];
-				console.log('start');
 				prevScrollY = touches[0].clientY;
 				marks[marks.length] = markBank.getMark(prevScrollY, event.timeStamp);
 				element.addEventListener( isTouch ? 'touchmove' : 'mousemove', handleTouchMove );
