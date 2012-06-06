@@ -1,14 +1,14 @@
-/*! scrolltop-overflow.amd 0.2.0 exports the decorator method that allows for touch-enabled scrolling of overflow:scroll element on mobile. (c) Todd Anderson : http://www.custardbelly.com/blog */
+/*! scrolltop-overflow.amd 0.2.1 exports the decorator method that allows for touch-enabled scrolling of overflow:scroll element on mobile. (c) Todd Anderson : http://www.custardbelly.com/blog */
 define( function() {
 
 	var isTouch = 'ontouchstart' in window,
 		scrollbarstyle = '::-webkit-scrollbar-thumb {border-radius: 2px; background-color: rgba(171, 171, 171, 1);}',
 		sheet = (function() {
 			var sheets = document.styleSheets,
-				i = 0, 
+				i, 
 				length = sheets.length,
 				scrollbarSheet;
-				for( i; i < length; i++ ) {
+				for( i = 0; i < length; i++ ) {
 					scrollbarSheet = sheets[i];
 					if( scrollbarSheet.href && 
 						scrollbarSheet.href.indexOf('stof-scrollbar.css') != -1 ) {
@@ -140,6 +140,24 @@ define( function() {
 						}
 					};
 				})(mark),
+				defaultTouchEndDelay = 200,
+				touchEndID,
+				presumeTouchEnd = function() {
+					try {
+						var evt = document.createEvent(isTouch ? 'TouchEvent' : 'MouseEvents');
+						if( isTouch ) {
+							evt.initTouchEvent('touchend');
+						}
+						else {
+							evt.initMouseEvent('mouseup');
+						}
+						evt.timeStamp = new Date();
+						element.dispatchEvent(evt);
+					}
+					catch( e ) {
+						console.log('Exception on scrolltop-overflow:presumeTouchEnd. [REASON]: ' + e.message + '. Possible not support for TouchEvent/MouseEvent.');
+					}
+				},
 				handleTouchMove = function( event ) {
 					event.preventDefault();
 					touches = isTouch ? event.touches : [event];
@@ -154,6 +172,11 @@ define( function() {
 					prevScrollY = scrollY;
 					velocity = 0;
 					marks[marks.length] = markBank.getMark(prevScrollY, event.timeStamp);
+
+					if( typeof touchendID !== 'undefined' ) {
+						clearTimeout( touchendID );
+					}
+					touchendID = setTimeout( presumeTouchEnd, defaultTouchEndDelay );
 				},
 				handleTouchEnd = function( event ) {
 					var crossover = 0, 
@@ -167,6 +190,9 @@ define( function() {
 						threshold, absThreshold, absVelocity,
 						factor;
 
+					if( typeof touchEndID !== 'undefined' ) {
+						clearTimeout( touchEndID );
+					}
 					if( marks.length === 0 ) return;
 
 					currentY = touches[0].clientY;
