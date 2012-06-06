@@ -40,7 +40,7 @@
     	</div>
     	<div style="margin-top:20px">
     		<p>------------------------------------------</p>
-    		<p>the previous text container overflows passed the defined height. It has been decorated with <a href="https://github.com/bustardcelly/scrolltop-overflow" targ="_blank">scrolltop-overflow</a> and supports scrolling (along with scrollbar display) for mobile.</p>
+    		<p>the previous text container overflows passed the defined height. It has been decorated with <a href="https://github.com/bustardcelly/scrolltop-overflow" targ="_blank">scrolltop-overflow</a> and supports scrolling (along with scrollbar display) for mobile iOS <emphasis>(presumably &lt;iOS5 which supports --webkit-overflow-scrolling).</emphasis></p>
     	</div>
     	<div style="margin-top:10px">
     		<h3>A Bit About Scrollbars on Mobile</h3>
@@ -48,6 +48,10 @@
     		<p>In order to show scrollbars upon 'scroll' gesture, scrolltop-overflow employs the ::-webkit-scrollbar pseudo-style. This is a fantastic article that goes into more depth: <a href="http://css-tricks.com/custom-scrollbars-in-webkit/" target="_blank">http://css-tricks.com/custom-scrollbars-in-webkit/</a>.</p>
     		<p>scrolltop-overflow applies the bar style at runtime. The scrollbarstyle property found in the library defines the thumb style. This is inserted into a stylesheet upon start of scroll and deleted from a stylesheet upon end of scroll using the insertRule() and deleteRule() methods, respectively. As such, scrolltop-overflow - if you are looking for scrollbar display support - requires the inclusion of style/stof-scrollbar.css file. scrolltop-overflow scans for this stylesheets existance on the DOM and calls insertRule() and deleteRule() on its instance to show and hide the scrollbar.</p>
     	</div>
+      <div style="margin-top:10px">
+          <h3>Android and overflow:scroll</h3>
+          <a href="http://code.google.com/p/android/issues/detail?id=19625">http://code.google.com/p/android/issues/detail?id=19625</a>
+          <p>This solution may not be compatible with some versions of android-flavored browsers. As such it is recommended to try overflow:auto for the container instead of overflow scroll. <emphasis>No scrollbars will appear with this solution.</emphasis></p>
     	<div class="printer"></div>
     <script src="javascripts/scale.fix.js"></script>
     <script src="javascripts/scrolltop-overflow.js"></script>

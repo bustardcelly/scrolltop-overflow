@@ -159,7 +159,7 @@
 						element.dispatchEvent(evt);
 					}
 					catch( e ) {
-						console.log('Exception on scrolltop-overflow:presumeTouchEnd. [REASON]: ' + e.message + '. Possible not support for TouchEvent/MouseEvent.');
+						console.log('[scrolltop-overflow.js]:: Exception on scrolltop-overflow:presumeTouchEnd. [REASON]: ' + e.message + '. Possible not support for TouchEvent/MouseEvent.');
 					}
 				},
 				handleTouchMove = function( event ) {
