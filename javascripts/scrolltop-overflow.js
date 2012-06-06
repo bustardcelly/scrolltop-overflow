@@ -144,6 +144,19 @@
 						}
 					};
 				})(mark),
+				defaultTouchEndDelay = 200,
+				touchEndID,
+				presumeTouchEnd = function() {
+					try {
+						var evt = document.createEvent('TouchEvents');
+						evt.initTouchEvent('touchend');
+						evt.timeStamp = new Date();
+						element.dispatchEvent(evt);
+					}
+					catch( e ) {
+						console.log('presumeTouchEnd: ' + e.message);
+					}
+				},
 				handleTouchMove = function( event ) {
 					event.preventDefault();
 					touches = isTouch ? event.touches : [event];
@@ -158,6 +171,11 @@
 					prevScrollY = scrollY;
 					velocity = 0;
 					marks[marks.length] = markBank.getMark(prevScrollY, event.timeStamp);
+
+					if( typeof touchendID !== 'undefined' ) {
+						clearTimeout( touchendID );
+					}
+					touchendID = setTimeout( presumeTouchEnd, defaultTouchEndDelay );
 				},
 				handleTouchEnd = function( event ) {
 					var crossover = 0, 
@@ -171,6 +189,9 @@
 						threshold, absThreshold, absVelocity,
 						factor;
 
+					if( typeof touchEndID !== 'undefined' ) {
+						clearTimeout( touchEndID );
+					}
 					if( marks.length === 0 ) return;
 
 					currentY = touches[0].clientY;
