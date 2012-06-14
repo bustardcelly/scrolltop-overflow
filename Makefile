@@ -3,7 +3,7 @@
 CLOSURE = java -jar ./build/closure/compiler.jar --compilation_level=SIMPLE_OPTIMIZATIONS
 
 # Source
-STOF_FILES = ./scrolltop-overflow.js ./scrolltop-overflow.amd.js
+STOF_FILES = ./script/scrolltop-overflow.js ./script/amd/scrolltop-overflow.amd.js
 
 # Deploy
 DIST_DIR = ./dist

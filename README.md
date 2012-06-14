@@ -7,10 +7,14 @@ utilities to provide overflow scrolling on mobile without -webkit-overflow-scrol
 Straight up HTML. Once loaded, auto-Decorates elements with class '.scrolltop-overflow' to allow for overflow scrolling in div on mobile.
 - See index.html for usage.
 
-##scrolltop-overflow.amd.js##
+##stof-detection.amd.js, scrolltop-overflow.amd.js##
 Requires [RequireJS](http://requirejs.org). Basic define and export of decorator() function to invoke on an element.
-###usage###
-	require( ['script/scrolltop-overflow.amd'], function( scrollerate ) {
+
+###usage with stof-detection###
+stof-detection can be used to provide solutions for overflow scrolling cross-browser. This means that if the browser supports -webkit-overflow-scrolling, then simply assign it. Otherwise, run a test if it is elligible for scrolltop-overflow decoration (typically this is AppleWebKit versions <= 533). If elligble, decorate with scrolltop-overflow module, else default to assigning overflow:auto which will enabled overflow scrolling on most Android browsers.
+
+###usage without stof-detection###
+	require( ['script/amd/scrolltop-overflow.amd'], function( scrollerate ) {
 		var els = document.querySelectorAll('div.scrolltop-overflow'),
     		i = 0, 
     		len = els.length;
@@ -36,4 +40,4 @@ just a heads up :)
 ##Not working in latest on Android?##
 [http://code.google.com/p/android/issues/detail?id=19625](http://code.google.com/p/android/issues/detail?id=19625)
 
-scrolltop-overflow may not work on all Android-flavored browsers. As such, it is recommended to try setting overflow:auto on the container and see if that provides the desired behavior. _no scrollbars will appear with such assignment_
+scrolltop-overflow may not work on all Android-flavored browsers. As such, it is recommended to try setting overflow:auto on the container and see if that provides the desired behavior. This is the default assignment when using #stof-detection.amd# _no scrollbars will appear with such assignment_

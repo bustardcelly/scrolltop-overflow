@@ -4,7 +4,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=320, user-scalable=0, minimum-scale=0.25, maximum-scale=1.6, target-densitydpi=device-dpi" />
 	    <title>scrollTop Overflow</title>
-	    <link rel="stylesheet" href="../style/stof.css" />
+	    <link rel="stylesheet" href="../style/stof-scrollbar.css" />
 	    <link rel="stylesheet" href="../style/compact.css" />
         <!-- Comment the following in to allow for scrollbar display. -->
         <!--<link rel="stylesheet" href="../style/stof-scrollbar.css" />-->
@@ -39,15 +39,13 @@
     			i = 0, len = els.length;
 
     		require.config({
-			    baseUrl: ".",
+			    baseUrl: "../script",
 			    paths: {
-			        "script": "../"
+			        "script": "."
 			    }
 		 	});
-    		require( ['script/scrolltop-overflow.amd'], function( scrollerate ) {
-    			for( i; i < len; i++ ) {
-    				scrollerate( els[i] );
-    			}
+    		require( ['script/amd/stof-detection.amd'], function( requiresSTOF ) {
+    			console.log( 'requires stof: ' + requiresSTOF );
     		});
     		
     	</script>
