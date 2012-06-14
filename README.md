@@ -13,6 +13,16 @@ Requires [RequireJS](http://requirejs.org). Basic define and export of decorator
 ###usage with stof-detection###
 stof-detection can be used to provide solutions for overflow scrolling cross-browser. This means that if the browser supports -webkit-overflow-scrolling, then simply assign it. Otherwise, run a test if it is elligible for scrolltop-overflow decoration (typically this is AppleWebKit versions <= 533). If elligble, decorate with scrolltop-overflow module, else default to assigning overflow:auto which will enabled overflow scrolling on most Android browsers.
 
+	require.config({
+	    baseUrl: "../script",
+	    paths: {
+	        "script": "."
+	    }
+ 	});
+	require( ['script/amd/stof-detection.amd'], function( requiresSTOF ) {
+		console.log( 'requires stof: ' + requiresSTOF ); // returns true if scrolltop-overflow decoration was needed.
+	});
+
 ###usage without stof-detection###
 	require( ['script/amd/scrolltop-overflow.amd'], function( scrollerate ) {
 		var els = document.querySelectorAll('div.scrolltop-overflow'),
