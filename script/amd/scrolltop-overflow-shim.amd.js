@@ -1,4 +1,4 @@
-define( function() {
+define( ['script/amd/scrolltop-overflow.amd'], function(scrollate) {
 
 	// On iOS, without --webkit-overflow-scrolling, user-scrolling for containers with overflow is not possible and takes on browser bounce/drag gesture.
 	// We can overcome that using scrolltop-overflow, but first we check if the browser itself has --webkit-overflow-scrolling, then to check UA to see how to apply scrolling capabilities.
@@ -12,10 +12,10 @@ define( function() {
 		webkit = ua.match( /AppleWebKit\/([0-9]+)/ ),
 		isCandidate = webkit && (webkit[1] <= 533),
 		operateOnElements = function( list, func ) {
-			var i = els.length,
+			var i = list.length,
 				args = Array.prototype.slice.call(arguments).slice(2);
 			while( --i > -1 ) {
-				func.apply( null, [els[i]].concat(args) );
+				func.apply( null, [list[i]].concat(args) );
 			}
 		},
 		setClassOnElement = function( element, name ) {
@@ -34,12 +34,10 @@ define( function() {
 	}
 	// Otherwise, assume it is iOS without support and decorate with scrolltop-overflow library.
 	else if( isCandidate ) {
-		require( ['script/amd/scrolltop-overflow.amd'], function( scrollate ) {
-			operateOnElements( elements, function( element, styleObject ) {
-				scrollate( element );				
-				assignStylesOnElement( element, styleObject );
-			}, {position: 'relative', overflow: 'scroll'});
-		});
+		operateOnElements( elements, function( element, styleObject ) {
+			scrollate( element );				
+			assignStylesOnElement( element, styleObject );
+		}, {position: 'relative', overflow: 'scroll'});
 	}
 	// Else, try auto. May need to refine previous clause with possible failing platforms.
 	else {
