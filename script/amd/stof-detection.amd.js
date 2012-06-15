@@ -8,6 +8,7 @@ define( function() {
 		elements = window.document.querySelectorAll('div.scrolltop-overflow'),
 		ua = navigator.userAgent,
 		platform = navigator.platform,
+		// webkit detection, gratiously appropriated from https://github.com/filamentgroup/Overthrow/blob/master/overthrow.js 
 		webkit = ua.match( /AppleWebKit\/([0-9]+)/ ),
 		isCandidate = webkit && (webkit[1] <= 533),
 		operateOnElements = function( list, func ) {
