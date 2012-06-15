@@ -12,10 +12,10 @@ define( function() {
 		webkit = ua.match( /AppleWebKit\/([0-9]+)/ ),
 		isCandidate = webkit && (webkit[1] <= 533),
 		operateOnElements = function( list, func ) {
-			var i = els.length,
+			var i = list.length,
 				args = Array.prototype.slice.call(arguments).slice(2);
 			while( --i > -1 ) {
-				func.apply( null, [els[i]].concat(args) );
+				func.apply( null, [list[i]].concat(args) );
 			}
 		},
 		setClassOnElement = function( element, name ) {
