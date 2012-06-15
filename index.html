@@ -11,6 +11,14 @@
     <link rel="stylesheet" href="stylesheets/stof.css">
     <link rel="stylesheet" href="stylesheets/stof-scrollbar.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <style>
+      .hidden {
+        display: none;
+      }
+      .shown {
+        display: normal;
+      }
+    </style>
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -38,9 +46,9 @@
 			Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!
 			</p>
     	</div>
-    	<div style="margin-top:20px">
-    		<p>------------------------------------------</p>
-    		<p>the previous text container overflows passed the defined height. It has been decorated with <a href="https://github.com/bustardcelly/scrolltop-overflow" targ="_blank">scrolltop-overflow</a> and supports scrolling (along with scrollbar display) for mobile iOS <emphasis>(presumably &lt;iOS5 which supports --webkit-overflow-scrolling).</emphasis></p>
+    	<div id="content">
+    		<p id="explanation">------------------------------------------</p>
+    		<p id="successContent" class="hidden">the previous text container overflows passed the defined height. It has been decorated with <a href="https://github.com/bustardcelly/scrolltop-overflow" targ="_blank">scrolltop-overflow</a> and supports scrolling (along with scrollbar display) for mobile iOS <emphasis>(presumably &lt;iOS5 which supports --webkit-overflow-scrolling).</emphasis></p>
     	</div>
     	<div style="margin-top:10px">
     		<h3>A Bit About Scrollbars on Mobile</h3>
@@ -55,5 +63,45 @@
     	<div class="printer"></div>
     <script src="javascripts/scale.fix.js"></script>
     <script src="javascripts/scrolltop-overflow.js"></script>
+    <script>
+    (function(document) {
+      var isTouch = "ontouchstart" in window,
+          hasWebkitOverflow = "WebkitOverflowScrolling" in window.document.documentElement.style,
+          elements = window.document.querySelectorAll('div.scrolltop-overflow'),
+          ua = navigator.userAgent,
+          platform = navigator.platform,
+          // webkit detection, gratiously appropriated from https://github.com/filamentgroup/Overthrow/blob/master/overthrow.js 
+          webkit = ua.match( /AppleWebKit\/([0-9]+)/ ),
+          isCandidate = webkit && (webkit[1] <= 533),
+          section = document.getElementById('content'),
+          div = document.createElement('div'),
+          element = document.createElement('p'),
+          uaElement = document.createElement('p'),
+          textContent, uaContent; 
+
+        // If supports webkit-overflow-scrolling: touch, just assign the class.
+        if( hasWebkitOverflow ) {
+          textContent = document.createTextNode('Your browser already supports --webkit-overflow-scrolling:touch.');
+        }
+        // Otherwise, assume it is iOS without support and decorate with scrolltop-overflow library.
+        else if( isCandidate ) {
+          textContent = document.createTextNode('Your browser does not support --webkit-overflow-scrolling:touch, but is a candidate for scrolltop-overflow due to its AppleWebKit-tiness (<=533)!');
+          document.getElementById('successContent').classList.remove('hidden');
+        }
+        // Else, try auto. May need to refine previous clause with possible failing platforms.
+        else {
+          textContent = document.createTextNode('Your browser does not support --webkit-overflow-scroll:touch, nor is it a candidate for AppleWebKit-tiness (<=533) and scrolltop-overflow. Defaulting to overflow:auto.');
+        }
+        element.appendChild(textContent);
+        element.style.color = '#39c';
+
+        uaContent = document.createTextNode('Way to go [' + ua + ']!');
+        uaElement.appendChild(uaContent);
+
+        div.appendChild(element);
+        div.appendChild(uaElement);
+        section.insertBefore(div, document.querySelector('#explanation').nextSibling);
+    }(window.document));
+    </script>
   </body>
 </html>
