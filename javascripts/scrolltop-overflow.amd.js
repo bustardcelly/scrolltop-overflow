@@ -1,31 +1,22 @@
-/*! scrolltop-overflow 0.2.0 allows for touch-enabled scrolling of overflow:scroll elements on mobile. (c) Todd Anderson : http://www.custardbelly.com/blog */
-(function(window) {
+/*! scrolltop-overflow.amd 0.2.1 exports the decorator method that allows for touch-enabled scrolling of overflow:scroll element on mobile. (c) Todd Anderson : http://www.custardbelly.com/blog */
+define( function() {
 
 	var isTouch = 'ontouchstart' in window,
-		elements = window.document.querySelectorAll( 'div.scrolltop-overflow' ),
-		printer = window.document.querySelector( 'div.printer' ),
-		printline = function( txt ) {
-			var line = document.createElement('p');
-			var text = document.createTextNode(txt);
-			line.appendChild(text);
-			printer.appendChild(line);
-		},
 		scrollbarstyle = '::-webkit-scrollbar-thumb {border-radius: 2px; background-color: rgba(171, 171, 171, 1);}',
 		sheet = (function() {
 			var sheets = document.styleSheets,
-				i = 0, 
+				i, 
 				length = sheets.length,
 				scrollbarSheet;
-				for( i; i < length; i++ ) {
+				for( i = 0; i < length; i++ ) {
 					scrollbarSheet = sheets[i];
-					if( scrollbarSheet.href.indexOf('stof-scrollbar.css') != -1 ) {
+					if( scrollbarSheet.href && 
+						scrollbarSheet.href.indexOf('stof-scrollbar.css') != -1 ) {
 						return scrollbarSheet;
 					}
 				}
 			return null;
 		}()),
-		i = 0,
-		length = elements.length,
 		DAMP = 0.8,
 		THRESHOLD = 0.01,
 		VECTOR_MIN = 0.065,
@@ -56,14 +47,17 @@
 		 * If found, using show() and hide() it will reveal the scrollbar using psuedo-scrollbar styles for webkit.
 		 */
 		scrollbar = function() {
+			var inserted = false;
 			return {
 				show: function() {
-					if( sheet !== null ) {
+					if( sheet !== null && !inserted ) {
+						inserted = true;
 						sheet.insertRule( scrollbarstyle, 1);
 					}
 				},
 				hide: function() {
-					if( sheet !== null ) {
+					if( sheet !== null && inserted ) {
+						inserted = false;
 						sheet.deleteRule( 1 );
 					}
 				}
@@ -72,9 +66,10 @@
 		/**
 		 * Animator attempts to use requestAnimationFrame, and falls back to setTimeout for
 		 * invoking a method continually after start() until stop() request.
-		 */ 
+		 */
 		animator = function() {
 			var animateID,
+				// rAF detection - http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 				requestAnimationFrame = window.requestAnimationFrame || 
                                 window.mozRequestAnimationFrame ||  
                                 window.webkitRequestAnimationFrame || 
@@ -87,6 +82,7 @@
                                 window.oCancelAnimationFrame;
 			return {
 				start: function( method ) {
+					stop();
 					if( requestAnimationFrame ) {
 						animateID = requestAnimationFrame( method );
 					}
@@ -159,7 +155,7 @@
 						element.dispatchEvent(evt);
 					}
 					catch( e ) {
-						console.log('[scrolltop-overflow.js]:: Exception on scrolltop-overflow:presumeTouchEnd. [REASON]: ' + e.message + '. Possible not support for TouchEvent/MouseEvent.');
+						console.log('Exception on scrolltop-overflow:presumeTouchEnd. [REASON]: ' + e.message + '. Possible not support for TouchEvent/MouseEvent.');
 					}
 				},
 				handleTouchMove = function( event ) {
@@ -240,7 +236,6 @@
 					if( velocity === 0 ) return;
 
 					element.scrollTop = position;
-					
 					velocity *= DAMP;
 					absVelocity = ( velocity > 0 ) ? velocity : -velocity;
 					if( absVelocity < VECTOR_MIN ) {
@@ -271,12 +266,11 @@
 						markBank.returnMark(marks.shift());
 					}
 				};
-				
+
 			element.addEventListener( isTouch ? 'touchstart' : 'mousedown', function( event ) {
 				event.stopPropagation();
 				position = this.scrollTop;
-				touches = isTouch ? event.touches : [event];
-				prevScrollY = touches[0].clientY;
+				prevScrollY = isTouch ? event.touches[0].clientY : event.clientY;
 				marks[marks.length] = markBank.getMark(prevScrollY, event.timeStamp);
 				element.addEventListener( isTouch ? 'touchmove' : 'mousemove', handleTouchMove );
 			});
@@ -286,9 +280,17 @@
 			});
 		};
 
-	// Loop through elements marked with class scrolltop-overflow and decorate them.
-	for( i = 0; i < length; i++ ) {
-		decorate( elements[i] );
-	}
-
-})(window);
+	/**
+	 * Return the decorator method. This can be used like the following:
+	 * 
+	 * require( ['script/scrolltop-overflow.amd'], function( scrollerate ) {
+	 *   var els = document.querySelectorAll('div.scrolltop-overflow'), 
+	 *		 i = 0,  
+	 * 		 len = els.length; 
+	 * 	 for( i; i < len; i++ ) {
+	 * 		 scrollerate( els[i] ); 	 
+	 * 	 } 	  
+	 * });
+	 */
+	return decorate;
+});
