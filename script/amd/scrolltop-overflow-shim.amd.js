@@ -1,4 +1,5 @@
 define( ['script/amd/scrolltop-overflow.amd'], function(scrollate) {
+/*! stof-detection.amd 0.2.2 is a shim to provide scrolling overflow support for mobile browsers - either through support on -webkit-overflow-scrolling:throw, the scrolltop-overflow decorator or defaul to overflow:auto. (c) Todd Anderson : http://www.custardbelly.com/blog */
 
 	// On iOS, without --webkit-overflow-scrolling, user-scrolling for containers with overflow is not possible and takes on browser bounce/drag gesture.
 	// We can overcome that using scrolltop-overflow, but first we check if the browser itself has --webkit-overflow-scrolling, then to check UA to see how to apply scrolling capabilities.

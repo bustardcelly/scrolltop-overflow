@@ -1,4 +1,4 @@
-/*! scrolltop-overflow 0.2.1 allows for touch-enabled scrolling of overflow:scroll elements on mobile. (c) Todd Anderson : http://www.custardbelly.com/blog */
+/*! scrolltop-overflow 0.2.2 allows for touch-enabled scrolling of overflow:scroll elements on mobile. (c) Todd Anderson : http://www.custardbelly.com/blog */
 (function(window) {
 
 	var isTouch = 'ontouchstart' in window,
