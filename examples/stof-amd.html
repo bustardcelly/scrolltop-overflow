@@ -43,6 +43,13 @@
     			var isCandidate = stof.detect();
     			console.log('supports overflow-scrolling:touch? ' + stof.supportsWebkitOverflow);
           		console.log('is candidate for scrolltop-overflow? ' + isCandidate);
+
+                if(isCandidate) {
+                    stof.decorateAll('div.scrolltop-overflow');
+                }
+                else if(stof.supportsWebkitOverflow) {
+                    stof.applyWebkitOverflow('div.scrolltop-overflow');
+                }
     		});
     		
     	</script>
