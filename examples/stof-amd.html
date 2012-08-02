@@ -39,8 +39,10 @@
 			        "script": "."
 			    }
 		 	});
-    		require( ['script/amd/scrolltop-overflow-shim.amd'], function( requiresSTOF ) {
-    			console.log( 'requires stof: ' + requiresSTOF );
+    		require( ['script/stof-require-0.3.1'], function( stof ) {
+    			var isCandidate = stof.detect();
+    			console.log('supports overflow-scrolling:touch? ' + stof.supportsWebkitOverflow);
+          		console.log('is candidate for scrolltop-overflow? ' + isCandidate);
     		});
     		
     	</script>

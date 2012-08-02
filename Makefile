@@ -19,11 +19,11 @@ DIST_DIR = ./dist
 #	Module
 MODULE_IN = ./script/wrapper-module.js
 MODULE_OUT = ${DIST_DIR}/stof-module-${VERSION}.js
-MODULE_OUT_MIN = ${DIST_DIR}/min/stof-module-${VERSION}.min.js
+MODULE_OUT_MIN = ${DIST_DIR}/stof-module-${VERSION}.min.js
 #	AMD (requireJS)
 AMD_IN = ./script/wrapper-require.js
 AMD_OUT = ${DIST_DIR}/stof-require-${VERSION}.js
-AMD_OUT_MIN = ${DIST_DIR}/min/stof-require-${VERSION}.min.js
+AMD_OUT_MIN = ${DIST_DIR}/stof-require-${VERSION}.min.js
 STOF_FILE = ./script/scrolltop-overflow.js
 
 all: wrap minify
