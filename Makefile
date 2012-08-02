@@ -1,20 +1,43 @@
+# Version
+VERSION = 0.3.1
+
 # Closure
 # [usage] ${CLOSURE} --js=path/to/full.js > path/to/full.min.js
 CLOSURE = java -jar ./build/closure/compiler.jar --compilation_level=SIMPLE_OPTIMIZATIONS
 
-# Source
-STOF_FILES = ./script/scrolltop-overflow.js ./script/amd/scrolltop-overflow.amd.js
+# r.js
+R_JS = java -classpath ./build/rhino/js.jar:./build/closure/compiler.jar org.mozilla.javascript.tools.shell.Main
+R_DIR = ./build/require
+
+# wrap.py
+WRAP = python ./build/wrapper/wrapper.py
 
 # Deploy
 DIST_DIR = ./dist
 
-all: deploy
+# Source
+#	Module
+MODULE_IN = ./script/wrapper-module.js
+MODULE_OUT = ${DIST_DIR}/stof-module-${VERSION}.js
+MODULE_OUT_MIN = ${DIST_DIR}/min/stof-module-${VERSION}.min.js
+#	AMD (requireJS)
+AMD_IN = ./script/wrapper-require.js
+AMD_OUT = ${DIST_DIR}/stof-require-${VERSION}.js
+AMD_OUT_MIN = ${DIST_DIR}/min/stof-require-${VERSION}.min.js
+STOF_FILE = ./script/scrolltop-overflow.js
 
-deploy:
-	@echo '==> minifying and deploying scrolltop-overflow flavors $<'
-	@@mkdir -p ${DIST_DIR};
-	@@for file in ${STOF_FILES}; do \
-	   echo ===minify: $$file...===; \
-	   ${CLOSURE} --js=$$file > ${DIST_DIR}/`basename $$file`; \
-	   done;
+all: wrap minify
+
+wrap:
+	@echo '==> wrapping scrolltop-overflow for module and AMD $<'
+	@@${WRAP} --stof ${STOF_FILE} --in ${AMD_IN} --out ${AMD_OUT};
+	@@${WRAP} --stof ${STOF_FILE} --in ${MODULE_IN}  --out ${MODULE_OUT};
 	@echo
+
+minify:
+	@echo '==> minifying stof amd $<'
+	@@${R_JS} ${R_DIR}/r-1.0.8.js -o ${R_DIR}/scrolltop-overflow.build.js;
+	@echo '==> ${AMD_OUT_MIN} $<'
+	@echo '==> minifying stof module $<'
+	@@${CLOSURE} --js=${MODULE_OUT} > ${MODULE_OUT_MIN}
+	@echo '==> ${MODULE_OUT_MIN} $<'

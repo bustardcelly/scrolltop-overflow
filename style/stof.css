@@ -1,4 +1,11 @@
+/* no support for -webkit-overflow-scrolling:touch, but candidate for scrolltop-overflow */
 .scrolltop-overflow {
 	position: relative;
 	overflow: scroll;
+}
+
+/* -webkit-overflow-scrolling:touch supported */
+.overflowable {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
 }

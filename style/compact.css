@@ -1,6 +1,8 @@
+/* for example purposes */
 .compact {
 	margin: 0;
 	padding: 0;
 	width: 280px;
 	height: 84px;
+	overflow: auto;
 }
