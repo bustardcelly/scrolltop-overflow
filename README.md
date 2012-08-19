@@ -21,9 +21,11 @@ Library provides an API for detection of whether the current browser it is loade
 ###wrapper-*###
 
 _wrapper-module.js_
+
 Uses basic IIFE module pattern to add a namespaced object onto and accessible from the window.
 
 _wrapper-require.js_
+
 Requires [RequireJS](http://requirejs.org). Basic define and export of namspaced library acceeible using common AMD.
 
 ###usage###
@@ -42,13 +44,13 @@ Provided in this project's repo are examples found in /examples :) I prefer to w
 
 This example utilizes the API provided by scrolltop-overflow.
 
-_+ detect()_
+	+ detect()
 Runs detection of whether the current browser passes as being a candidate for scrolltop-overflow; meaning, the browser does not support -webkit-overflow-scrolling:touch. As mentioned earlier, scrolltop-overflow will not automatically decorate any elements when calling detect(). It is not intended to be a polyfill. It simply provides a means for a developer to determine what decoration - if any - to apply based on the browser's candidacy for supporting -webkit-overflow-scrolling, and does so by providing an API for detection and decoration.
 
-_+ decorateAll(query)_
+	+ decorateAll(query)
 Decorates all elements that match the CSS query to allow for user-scrolling when -webkit-overflow-scrolling is not supported.
 
-_+ applyWebkitOverflow(query)_
+	+ applyWebkitOverflow(query)
 Decorates all elements that match the CSS query with -webkit-overflow-scrolling:touch styles.
 
 #A Bit About Scrollbars#
