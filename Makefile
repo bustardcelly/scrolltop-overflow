@@ -31,7 +31,7 @@ all: wrap minify
 wrap:
 	@echo '==> wrapping scrolltop-overflow for module and AMD $<'
 	@@${WRAP} --stof ${STOF_FILE} --in ${AMD_IN} --out ${AMD_OUT};
-	@@${WRAP} --stof ${STOF_FILE} --in ${MODULE_IN}  --out ${MODULE_OUT};
+	@@${WRAP} --stof ${STOF_FILE} --in ${MODULE_IN} --out ${MODULE_OUT};
 	@echo
 
 minify:

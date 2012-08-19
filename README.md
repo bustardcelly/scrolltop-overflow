@@ -1,38 +1,55 @@
 scrolltop-overflow
 ==================
 
-utilities to provide overflow scrolling on mobile without -webkit-overflow-scrolling support.
+Utility library to provide overflow scrolling on mobile browsers that do not support -webkit-overflow-scrolling. (Generally anything pre AppleWebKit 533 - with the glorious exception of Chrome on iOS which reports as being 534 but does not support overlow-scrolling).
 
-##scrolltop-overflow.js##
-Straight up HTML. Once loaded, auto-Decorates elements with class '.scrolltop-overflow' to allow for overflow scrolling in div on mobile.
-- See index.html for usage.
+##why?##
+On early mobile browsers, setting overflow on block containers does not allow for scrolling within the container using touch gesture. That gesture is typically overridden by the browser to perform kinetic scrolling of the page rather than the element. As such, you present content that is cut off and inaccessible.
 
-##stof-detection.amd.js, scrolltop-overflow.amd.js##
-Requires [RequireJS](http://requirejs.org). Basic define and export of decorator() function to invoke on an element.
+scrolltop-overflow provides the ability to allow for user-scrolling within a block element that has content hidden in the overflow. It's not super fancy in its animation in providing kinetic scrolling based on OS, but it does provide animated scrolling with a flick gesture.
 
-###usage with stof-detection###
-stof-detection can be used to provide solutions for overflow scrolling cross-browser. This means that if the browser supports -webkit-overflow-scrolling, then simply assign it. Otherwise, run a test if it is elligible for scrolltop-overflow decoration (typically this is AppleWebKit versions <= 533). If elligble, decorate with scrolltop-overflow module, else default to assigning overflow:auto which will enabled overflow scrolling on most Android browsers.
+It is important to note that scrolltop-overflow will not automatically decorate any elements upon load and invocation of the library. It is not intended to be a polyfill. It simply provides a means for a developer to determine what decoration - if any - to apply based on the browser's candidacy for supporting -webkit-overflow-scrolling, and does so by providing an API for detection and decoration.
 
-	require.config({
-	    baseUrl: "../script",
-	    paths: {
-	        "script": "."
+##how##
+The scrolltop-overflow project scripts (found in /scripts) provide the main utility library that does detection and decoration of elements, as well as wrapper files for deployment targets namespaced on global/window or AMD (in this case specifically [RequireJS](http://requirejs.org)). The Makefile included in the project calls a custom python script that will replace demarked lines in the wrapper files with scrolltop-overflow.js so as to allow for multiple deployment strategies.
+
+When deployed using the Makefile, scrolltop-overflow is shortened to stof-&lt;target&gt;-&lt;version&gt;.js
+
+###scrolltop-overflow.js###
+Library provides an API for detection of whether the current browser it is loaded into supports -webkit-overflow-scrolling:touch and decorator methods for when it does or does not. When the browser does support -webkit-overflow-scrolling, it simply assigns that css rule to the element and let's the browser control the behaviour for the container. When it does not, it sets overflow:auto, provides a global styling for scrollbars on overflow-n content elements and assigns touch event handlers to allow for user scrolling within an element.
+
+###wrapper-*###
+
+_wrapper-module.js_
+Uses basic IIFE module pattern to add a namespaced object onto and accessible from the window.
+
+_wrapper-require.js_
+Requires [RequireJS](http://requirejs.org). Basic define and export of namspaced library acceeible using common AMD.
+
+###usage###
+Provided in this project's repo are examples found in /examples :) I prefer to work with AMD, so this quick summary of how to use scrolltop-overflow will provide an example using RequireJS:
+
+	require( ['script/stof-require-0.3.1'], function( stof ) {
+		var isCandidate = stof.detect();
+		
+	    if(isCandidate) {
+	        stof.decorateAll('div.scrolltop-overflow');
 	    }
- 	});
-	require( ['script/amd/stof-detection.amd'], function( requiresSTOF ) {
-		console.log( 'requires stof: ' + requiresSTOF ); // returns true if scrolltop-overflow decoration was needed.
+	    else if(stof.supportsWebkitOverflow) {
+	        stof.applyWebkitOverflow('div.scrolltop-overflow');
+	    }
 	});
 
-###usage without stof-detection###
-	require( ['script/amd/scrolltop-overflow.amd'], function( scrollerate ) {
-		var els = document.querySelectorAll('div.scrolltop-overflow'),
-    		i = 0, 
-    		len = els.length;
+This example utilizes the API provided by scrolltop-overflow.
 
-		for( i; i < len; i++ ) {
-			scrollerate( els[i] );
-		}
-	});
+_+ detect()_
+Runs detection of whether the current browser passes as being a candidate for scrolltop-overflow; meaning, the browser does not support -webkit-overflow-scrolling:touch. As mentioned earlier, scrolltop-overflow will not automatically decorate any elements when calling detect(). It is not intended to be a polyfill. It simply provides a means for a developer to determine what decoration - if any - to apply based on the browser's candidacy for supporting -webkit-overflow-scrolling, and does so by providing an API for detection and decoration.
+
+_+ decorateAll(query)_
+Decorates all elements that match the CSS query to allow for user-scrolling when -webkit-overflow-scrolling is not supported.
+
+_+ applyWebkitOverflow(query)_
+Decorates all elements that match the CSS query with -webkit-overflow-scrolling:touch styles.
 
 #A Bit About Scrollbars#
 How scrolltop-overflow works is by updating the scrollTop property of a div that has a static height and overflow:scroll defined. As such, scrollbars are not present on a mobile device (at least for those not fortunate to support -webkit-overflow-scrolling). They are not present on resize of the element container, nor on 'scrolling' with scrolltop-overflow.
