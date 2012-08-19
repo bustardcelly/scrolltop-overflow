@@ -10,7 +10,7 @@ scrolltop-overflow provides the ability to allow for user-scrolling within a blo
 
 It is important to note that scrolltop-overflow will not automatically decorate any elements upon load and invocation of the library. It is not intended to be a polyfill. It simply provides a means for a developer to determine what decoration - if any - to apply based on the browser's candidacy for supporting -webkit-overflow-scrolling, and does so by providing an API for detection and decoration.
 
-##how##
+##how?##
 The scrolltop-overflow project scripts (found in /scripts) provide the main utility library that does detection and decoration of elements, as well as wrapper files for deployment targets namespaced on global/window or AMD (in this case specifically [RequireJS](http://requirejs.org)). The Makefile included in the project calls a custom python script that will replace demarked lines in the wrapper files with scrolltop-overflow.js so as to allow for multiple deployment strategies.
 
 When deployed using the Makefile, scrolltop-overflow is shortened to stof-&lt;target&gt;-&lt;version&gt;.js
